@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<body>
+    <div class="container d-flex flex-column align-items-center">
+        <h1>Welcome to the Great Number Game!</h1>
+        <p>I am thinking of a number between 1 and 100</p>
+        <p>Take a guess!</p>
+        <p>{{5-tries}} takes left!</p>
+        {% if not feedback == 'none' %}
+            {% if feedback == 'correct' %}
+                <div style="width: 300px; height: 300px; background-color: greenyellow;" class="d-flex flex-column align-items-center justify-content-center">
+                    <h2 align="center">Correct! The number is {{number}}</h2>
+                    <span>Took you {{tries}} to find it!</span>
+                    <form action="/submit_score" method="post" class="d-flex flex-column justify-content-center gap-2">
+                        <input type="text" name="name" id="" class="form-control" placeholder="Name">
+                        <button type="submit" class="btn btn-primary">Submit Score</button>
+                    </form>
+                </div>
+            {% endif %}
+            {% if feedback == 'too high' %}
+                <div style="width: 300px; height: 300px; background-color: orangered;" class="d-flex align-items-center justify-content-center">
+                    <h2 align="center">Too High!</h2>
+                </div>
+            {% endif %}
+            {% if feedback == 'too low' %}
+                <div style="width: 300px; height: 300px; background-color: orangered;" class="d-flex align-items-center justify-content-center">
+                    <h2 align="center">Too Low!</h2>
+                </div>
+            {% endif %}
+        {% endif %}
+        <form action="/check" method="post" class="d-flex gap-2 mt-3 w-50 justify-content-center">
+            <input type="number" name="answer" id="" min="0" max="100"  class="form-control w-25" autofocus>
+            {% if tries == 5 or feedback == 'correct' %}
+                <button type="submit" class="btn btn-primary" disabled>Check</button>
+            {% endif %}
+            {% if not tries == 5%}
+                <button type="submit" class="btn btn-primary" >Check</button>
+            {% endif %}
+            <a href="/reset" class="btn btn-danger ">Reset Number</a>
+        </form>
+        {% if tries == 5 and not feedback  == 'correct' %}
+            <div style="width: 100%; height: 100px; background-color: orangered;" class="rounded d-flex gap-2 mt-3 w-50 justify-content-center align-items-center">
+                <h2 align="center">You failed 5 times! you can restart.</h2>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
